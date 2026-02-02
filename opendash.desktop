@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Opendash
+Comment=Optimizador oficial de OpenArgOs
+Exec=python3 /home/cinnamon-trixie/Proyectos/Openaaps/Opendash/opendash.py
+Icon=/home/TU_USUARIO/Proyectos/Openaaps/Opendash/icono.png
+Terminal=false
+Type=Application
+Categories=System;Settings;
