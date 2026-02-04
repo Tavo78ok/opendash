@@ -20,3 +20,16 @@ sudo apt install python3-pip python3-tk power-profiles-daemon
 pip install customtkinter
 psutil
 
+🚀 Instalación
+​Desde el código fuente
+1.Clona el repositorio:
+git clone [https://github.com/tu-usuario/opendash.git](https://github.com/tu-usuario/opendash.git)
+
+2.Ejecuta la aplicación:
+python3 opendash.py
+
+Usando el paquete .deb (Recomendado)
+Si tienes el archivo .deb generado, simplemente instálalo con:
+sudo apt install ./opendash_v1.0_Final.deb
+
+
