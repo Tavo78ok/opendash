@@ -31,5 +31,9 @@ python3 opendash.py
 Usando el paquete .deb (Recomendado)
 Si tienes el archivo .deb generado, simplemente instálalo con:
 sudo apt install ./opendash_v1.0_Final.deb
+📸 Capturas de Pantalla
+<img width="1440" height="900" alt="Captura de pantalla_2026-02-04_01-07-32" src="https://github.com/user-attachments/assets/4ccc7189-c8f6-47e9-bb73-018689184bc9" />
 
+🇦🇷 Autor
+Desarrollado por Gustavo (Tavo) como parte del proyecto OpenArgOs.
 
