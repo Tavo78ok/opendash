@@ -23,7 +23,7 @@ psutil
 🚀 Instalación
 ​Desde el código fuente
 1.Clona el repositorio:
-git clone [https://github.com/tu-usuario/opendash.git](https://github.com/tu-usuario/opendash.git)
+git clone [https://github.com/Tavo78ok/opendash.git](https://github.com/Tavo78ok/opendash.git)
 
 2.Ejecuta la aplicación:
 python3 opendash.py
