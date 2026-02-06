@@ -32,8 +32,6 @@ Usando el paquete .deb (Recomendado)
 Si tienes el archivo .deb generado, simplemente instálalo con:
 sudo apt install ./opendash_v1.0_Final.deb
 
-📸 Capturas de Pantalla
-<img width="1440" height="900" alt="Captura de pantalla_2026-02-04_01-07-32" src="https://github.com/user-attachments/assets/1bde8401-10b2-4551-9243-77a03e5d5b3a" />
 
 🇦🇷 Autor
 Desarrollado por Gustavo (Tavo) como parte del proyecto OpenArgOs.
