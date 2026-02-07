@@ -11,7 +11,6 @@ Opendash es una suite de optimización y monitoreo de sistema liviana, diseñada
 * 🌐 **Monitor de Red:** Visualización del tráfico de subida y bajada en KB/s.
 
 ## 🛠️ Requisitos
-
 Para que Opendash funcione correctamente, asegúrate de tener instaladas las siguientes dependencias en tu sistema basado en Debian/Ubuntu:
 
 ```bash
