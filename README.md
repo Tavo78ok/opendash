@@ -1,4 +1,4 @@
-# 🚀 Opendash v1.0 | OpenArgOs Gold Edition
+# 🚀 Opendash v1.2.1 | OpenArgOs Máster Gold Edition
 
 Opendash es una suite de optimización y monitoreo de sistema liviana, diseñada específicamente para el ecosistema **OpenArgOs**. Permite a los usuarios de Linux controlar su hardware y software de manera centralizada con una interfaz moderna y oscura.
 
