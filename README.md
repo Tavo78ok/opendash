@@ -1,18 +1,27 @@
 # 🚀 OpenDash v1.3 - ArgOs Platinum Edition
 
-OpenDash es el centro de control oficial para **OpenArgOs**, diseñado para ofrecer un monitoreo en tiempo real, optimización gamer y limpieza profunda del sistema en distribuciones basadas en Debian/Ubuntu.
+Centro de control integral para **OpenArgOs**, diseñado para monitoreo de hardware, optimización de energía y mantenimiento del sistema.
 
-## ✨ Características Principales
-- **Dashboard Stacer Style:** Monitoreo técnico de CPU, GPU, Kernel y Uptime.
-- **Modo Gamer:** Perfiles de energía optimizados (Performance, Balanced, Power-saver).
-- **Limpieza Total:** Vaciado de caché del sistema y papelera de reciclaje en un solo clic.
-- **Monitor de Red y Procesos:** Visualización de interfaces y procesos activos en segundo plano.
+## ✨ Novedades de la Versión 1.3
+- **Dashboard Avanzado:** Información técnica detallada (CPU, GPU, Kernel) con estética profesional.
+- **Limpiador Total:** Ahora incluye vaciado de papelera de usuario y limpieza de caché de sistema.
+- **Monitor de Red y Procesos:** Visualización en tiempo real de la actividad en segundo plano.
 
-## 🛠️ Instalación (Desde el código fuente)
+## 📸 Capturas de Pantalla
+*(Sugerencia: Sube tus capturas a la carpeta 'img' y ponelas aquí)*
+![Dashboard](https://github.com/Tavo78ok/opendash/raw/main/dashboard.png)
 
-Si quieres ejecutarlo desde el código, primero instala las dependencias:
+## 📥 Instalación Rápida
+
+Para ejecutar desde el código fuente en Debian Trixie / ArgOs:
 
 ```bash
+# Instalar dependencias necesarias
 sudo apt update
-sudo apt install python3-pip python3-psutil python3-tk
+sudo apt install python3-pip python3-psutil python3-tk -y
 pip install customtkinter --break-system-packages
+
+# Clonar y ejecutar
+git clone [https://github.com/Tavo78ok/opendash.git](https://github.com/Tavo78ok/opendash.git)
+cd opendash
+python3 opendash.py
