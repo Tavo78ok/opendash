@@ -8,9 +8,15 @@ Centro de control integral para **OpenArgOs**, diseñado para monitoreo de hardw
 - **Monitor de Red y Procesos:** Visualización en tiempo real de la actividad en segundo plano.
 
 ## 📸 Capturas de Pantalla
-*(Sugerencia: Sube tus capturas a la carpeta 'img' y ponelas aquí)*
-![Dashboard](https://github.com/Tavo78ok/opendash/raw/main/dashboard.png)
 
+### 🖥️ Dashboard (Estado del Sistema)
+<img src="dashboard.png" width="800">
+
+### 🎮 Modo Gamer (Optimización)
+<img src="gamer.png" width="800">
+
+### 🌐 Red y Procesos
+<img src="red.png" width="800">
 ## 📥 Instalación Rápida
 
 Para ejecutar desde el código fuente en Debian Trixie / ArgOs:
