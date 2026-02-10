@@ -25,3 +25,6 @@ pip install customtkinter --break-system-packages
 git clone [https://github.com/Tavo78ok/opendash.git](https://github.com/Tavo78ok/opendash.git)
 cd opendash
 python3 opendash.py
+
+##📦 Paquete .DEB
+Puedes encontrar el instalador listo en la sección de Releases o descargar el archivo opendash-pkg.deb de este repositorio e instalarlo con: sudo apt install ./opendash-pkg.deb
