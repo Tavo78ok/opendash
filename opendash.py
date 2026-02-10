@@ -1,4 +1,3 @@
- 
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox
@@ -11,7 +10,7 @@ class OpenDashApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("OpenDash v1.2.1 - ArgOs Gold Full")
+        self.title("OpenDash v1.3 - ArgOs Platinum")
         self.geometry("1100x850") 
         ctk.set_appearance_mode("dark")
         
@@ -129,20 +128,53 @@ class OpenDashApp(ctk.CTk):
     def setup_red(self):
         tab = self.tabview.tab("Red")
         for widget in tab.winfo_children(): widget.destroy()
-        scroll = ctk.CTkScrollableFrame(tab, fg_color="transparent")
-        scroll.pack(fill="both", expand=True, padx=20, pady=20)
 
+        # Contenedor superior para tarjetas de red
+        self.net_scroll = ctk.CTkScrollableFrame(tab, fg_color="transparent", height=250)
+        self.net_scroll.pack(fill="x", padx=20, pady=10)
+
+        # Divisor
+        ctk.CTkLabel(tab, text="🔍 ACTIVIDAD EN SEGUNDO PLANO", font=("Arial", 14, "bold"), text_color=self.color_neon).pack(pady=5)
+
+        # Tabla de Procesos
+        self.proc_frame = ctk.CTkFrame(tab, fg_color=self.color_card, corner_radius=15)
+        self.proc_frame.pack(fill="both", expand=True, padx=20, pady=10)
+
+        self.proc_text = ctk.CTkLabel(self.proc_frame, text="Cargando procesos...", font=("Courier New", 12), justify="left", anchor="nw")
+        self.proc_text.pack(fill="both", expand=True, padx=20, pady=15)
+        
+        self.refresh_net_cards()
+        self.update_processes()
+
+    def refresh_net_cards(self):
+        for widget in self.net_scroll.winfo_children(): widget.destroy()
         for n, a in psutil.net_if_addrs().items():
             if n == "lo": continue
-            card = ctk.CTkFrame(scroll, fg_color=self.color_card, corner_radius=12)
+            card = ctk.CTkFrame(self.net_scroll, fg_color=self.color_card, corner_radius=12)
             card.pack(fill="x", pady=5, padx=10)
             stats = psutil.net_if_stats().get(n)
             est = "✅ CONECTADO" if stats and stats.isup else "❌ DESCONECTADO"
             ip = next((addr.address for addr in a if addr.family == 2), "N/A")
-            ctk.CTkLabel(card, text=f"🌐 {n.upper()}", font=("Arial", 13, "bold")).pack(side="left", padx=20, pady=15)
-            ctk.CTkLabel(card, text=f"IP: {ip}", font=("Courier New", 13), text_color=self.color_neon).pack(side="left", padx=20)
-            ctk.CTkLabel(card, text=est, text_color=self.color_neon if "✅" in est else "#e74c3c").pack(side="right", padx=20)
+            ctk.CTkLabel(card, text=f"🌐 {n.upper()}", font=("Arial", 12, "bold")).pack(side="left", padx=15, pady=10)
+            ctk.CTkLabel(card, text=f"IP: {ip}", font=("Courier New", 12)).pack(side="left", padx=15)
+            ctk.CTkLabel(card, text=est, text_color=self.color_neon if "✅" in est else "#e74c3c").pack(side="right", padx=15)
 
+    def update_processes(self):
+        try:
+            # Obtenemos los 10 procesos que más CPU consumen (estilo monitor de recursos)
+            procs = sorted(psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent']), 
+                           key=lambda x: x.info['cpu_percent'], reverse=True)[:10]
+            
+            header = f"{'PID':<8} {'NOMBRE':<20} {'CPU %':<10} {'RAM %':<10}\n"
+            header += "-" * 50 + "\n"
+            lines = ""
+            for p in procs:
+                lines += f"{p.info['pid']:<8} {p.info['name'][:18]:<20} {p.info['cpu_percent']:<10} {p.info['memory_percent']:>5.1f}%\n"
+            
+            self.proc_text.configure(text=header + lines)
+        except: pass
+        # Actualizamos cada 3 segundos la lista de procesos
+        self.after(3000, self.update_processes)
     # --- LÓGICA ---
     def desinstalar_app(self):
         try:
@@ -152,9 +184,21 @@ class OpenDashApp(ctk.CTk):
                 subprocess.Popen(["x-terminal-emulator", "-e", "bash", "-c", cmd])
         except: messagebox.showwarning("Atención", "Selecciona una app primero.")
 
+    # --- BUSCÁ ESTA PARTE EN TU CÓDIGO ---
     def limpiar_sistema(self):
-        if messagebox.askyesno("Limpieza", "¿Ejecutar limpieza?"):
-            cmd = "pkexec bash -c 'apt-get clean && apt-get autoremove -y; echo -e \"\\n✨ Limpieza terminada. Presiona Enter...\"; read'"
+        if messagebox.askyesno("Limpieza", "¿Ejecutar limpieza de Caché, Paquetes Huérfanos y Vaciar Papelera?"):
+            # Reemplazamos el '~' por la ruta real de tu usuario
+            # Si tu usuario no es cinnamontrixie, cambialo en la ruta de abajo
+            user_path = "/home/cinnamontrixie/.local/share/Trash"
+            
+            cmd = (
+                f"pkexec bash -c '"
+                "apt-get clean && apt-get autoremove -y; "
+                "echo \"Vaciando la papelera de reciclaje de usuario...\"; "
+                f"rm -rf {user_path}/files/*; "
+                f"rm -rf {user_path}/info/*; "
+                "echo -e \"\\n✨ TODO LIMPIO: Sistema y Papelera. Presiona Enter...\"; read'"
+            )
             subprocess.Popen(["x-terminal-emulator", "-e", "bash", "-c", cmd])
 
     def refresh_sys_info(self):
@@ -213,7 +257,14 @@ if __name__ == "__main__":
     app = OpenDashApp()
     app.mainloop()
 
-         
-            
-            
+
+
+
+
+     
+    
         
+     
+         
+       
+     
