@@ -11,7 +11,7 @@ class OpenDashApp(ctk.CTk):
         super().__init__()
 
         self.title("OpenDash v1.3 - ArgOs Platinum")
-        self.geometry("1100x850") 
+        self.geometry("1100x650") 
         ctk.set_appearance_mode("dark")
         
         self.color_neon = "#00ffa3"  
@@ -175,6 +175,7 @@ class OpenDashApp(ctk.CTk):
         except: pass
         # Actualizamos cada 3 segundos la lista de procesos
         self.after(3000, self.update_processes)
+
     # --- LÓGICA ---
     def desinstalar_app(self):
         try:
@@ -189,7 +190,8 @@ class OpenDashApp(ctk.CTk):
         if messagebox.askyesno("Limpieza", "¿Ejecutar limpieza de Caché, Paquetes Huérfanos y Vaciar Papelera?"):
             # Reemplazamos el '~' por la ruta real de tu usuario
             # Si tu usuario no es cinnamontrixie, cambialo en la ruta de abajo
-            user_path = "/home/cinnamontrixie/.local/share/Trash"
+            user_home = os.path.expanduser("~")
+            user_path = f"{user_home}/.local/share/Trash"
             
             cmd = (
                 f"pkexec bash -c '"
@@ -256,15 +258,3 @@ class OpenDashApp(ctk.CTk):
 if __name__ == "__main__":
     app = OpenDashApp()
     app.mainloop()
-
-
-
-
-
-     
-    
-        
-     
-         
-       
-     
