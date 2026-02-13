@@ -1,8 +1,11 @@
 [Desktop Entry]
-Name=OpenDash Platinum
-Comment=Optimizador ArgOs
-Exec=/usr/bin/opendash
+Name=OpenDash 
+Comment=Optimizador ArgOs Platinum
+Exec=opendash
 Icon=/usr/share/pixmaps/opendash.png
 Terminal=false
 Type=Application
 Categories=System;Settings;
+
+
+
