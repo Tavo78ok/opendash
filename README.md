@@ -7,7 +7,7 @@ Centro de control integral para **OpenArgOs**, diseñado para monitoreo de hardw
 - **Gamer:** Selector de perfiles para adecuarse a cada pc, tipo de trabajo o para juegos
 - **Limpiador Total:** Ahora incluye vaciado de papelera de usuario y limpieza de caché de sistema.
 - **Monitor de Red y Procesos:** Visualización en tiempo real de la actividad en segundo plano.
-- **Inicio:**Monitor de aplicaciones de inicio automatico, con la opcion de desmarcar y refrescar la info
+- **Inicio:** Monitor de aplicaciones de inicio automatico, con la opcion de desmarcar y refrescar la info
 
 ## 📸 Capturas de Pantalla
 
