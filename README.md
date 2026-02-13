@@ -9,6 +9,11 @@ Centro de control integral para **OpenArgOs**, diseñado para monitoreo de hardw
 - **Monitor de Red y Procesos:** Visualización en tiempo real de la actividad en segundo plano.
 - **Inicio:** Monitor de aplicaciones de inicio automatico, con la opcion de desmarcar y refrescar la info
 
+##🛠️ Requisitos
+Python 3
+CustomTkinter
+Psutil
+
 ## 📸 Capturas de Pantalla
 
 ### 🖥️ Dashboard (Estado del Sistema)
