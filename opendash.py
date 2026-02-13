@@ -10,12 +10,12 @@ class OpenDashApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("OpenDash v1.3 - ArgOs Platinum")
-        self.geometry("1100x650") 
+        self.title("OpenDash v1.3.1 - ArgOs Platinum")
+        self.geometry("1100x650")
         ctk.set_appearance_mode("dark")
-        
-        self.color_neon = "#00ffa3"  
-        self.color_card = "#1a1c23"  
+
+        self.color_neon = "#00ffa3"
+        self.color_card = "#1a1c23"
 
         self.tabview = ctk.CTkTabview(self, segmented_button_selected_color=self.color_neon)
         self.tabview.pack(padx=20, pady=20, fill="both", expand=True)
@@ -40,8 +40,8 @@ class OpenDashApp(ctk.CTk):
         header = ctk.CTkFrame(tab, fg_color="transparent")
         header.pack(fill="x", padx=40, pady=(20, 10))
         ctk.CTkLabel(header, text="Estado del Sistema", font=("Arial", 28, "bold")).pack(side="left")
-        
-        ctk.CTkButton(header, text="🧹 LIMPIEZA PROFUNDA", fg_color="#34495e", hover_color="#c0392b", 
+
+        ctk.CTkButton(header, text="🧹 LIMPIEZA PROFUNDA", fg_color="#34495e", hover_color="#c0392b",
                       command=self.limpiar_sistema).pack(side="right")
 
         cards_frame = ctk.CTkFrame(tab, fg_color="transparent")
@@ -52,7 +52,7 @@ class OpenDashApp(ctk.CTk):
 
         info_frame = ctk.CTkFrame(tab, fg_color=self.color_card, corner_radius=15, border_width=1, border_color="#333")
         info_frame.pack(fill="both", expand=True, padx=40, pady=20)
-        
+
         ctk.CTkLabel(info_frame, text="📋 ESPECIFICACIONES DEL EQUIPO", font=("Arial", 16, "bold"), text_color=self.color_neon).pack(pady=15)
         self.info_text = ctk.CTkLabel(info_frame, text="Cargando...", font=("Courier New", 15), justify="left", anchor="w")
         self.info_text.pack(pady=10, padx=40, fill="both")
@@ -71,48 +71,83 @@ class OpenDashApp(ctk.CTk):
         return card, label, bar
 
     # --- 2. MODO GAMER CON TIPS RECUPERADOS ---
+    # --- 2. GESTIÓN DE PERFILES GAMER (CON RESALTADO Y TIPS) ---
     def setup_gamer(self):
         tab = self.tabview.tab("Gamer")
         for widget in tab.winfo_children(): widget.destroy()
-        
-        ctk.CTkLabel(tab, text="Optimización y Energía", font=("Arial", 24, "bold"), text_color=self.color_neon).pack(pady=20)
 
-        main_container = ctk.CTkFrame(tab, fg_color="transparent")
-        main_container.pack(fill="both", expand=True, padx=20)
+        ctk.CTkLabel(tab, text="Optimización de Rendimiento", font=("Arial", 22, "bold"), text_color=self.color_neon).pack(pady=15)
 
-        # Panel Izquierdo: Botones
-        left_p = ctk.CTkFrame(main_container, fg_color=self.color_card, corner_radius=15)
-        left_p.pack(side="left", fill="both", expand=True, padx=10, pady=10)
-        
-        ctk.CTkLabel(left_p, text="Perfiles de Energía", font=("Arial", 16, "bold")).pack(pady=15)
-        self.btn_ahorro = ctk.CTkButton(left_p, text="🍃 AHORRO", height=45, command=lambda: self.set_power_profile("power-saver"))
-        self.btn_ahorro.pack(pady=10, padx=30, fill="x")
-        self.btn_bal = ctk.CTkButton(left_p, text="⚖️ BALANCE", height=45, command=lambda: self.set_power_profile("balanced"))
-        self.btn_bal.pack(pady=10, padx=30, fill="x")
-        self.btn_perf = ctk.CTkButton(left_p, text="🚀 PERFORMANCE", height=45, command=lambda: self.set_power_profile("performance"))
-        self.btn_perf.pack(pady=10, padx=30, fill="x")
+        # Contenedor de Botones
+        self.frame_perfiles = ctk.CTkFrame(tab, fg_color=self.color_card, corner_radius=15)
+        self.frame_perfiles.pack(pady=10, padx=50, fill="x")
 
-        # Panel Derecho: TIPS (RECUPERADOS)
-        right_p = ctk.CTkFrame(main_container, fg_color="#1e2129", corner_radius=15, border_width=1, border_color="#333")
-        right_p.pack(side="left", fill="both", expand=True, padx=10, pady=10)
-        ctk.CTkLabel(right_p, text="💡 TIPS PARA GAMERS", font=("Arial", 16, "bold"), text_color=self.color_neon).pack(pady=15)
-        
-        tips_text = (
-            "• PERFORMANCE: Activa todos los núcleos\n  al máximo. Ideal para jugar.\n\n"
-            "• BALANCE: Equilibra calor y potencia.\n  Uso diario recomendado.\n\n"
-            "• AHORRO: Baja frecuencias para cuidar\n  la batería o bajar temp.\n\n"
-            "• TIP: Cerrar navegadores antes de abrir\n  un juego libera mucha RAM."
+        self.color_btn_reposo = "#2b2b2b"
+        self.color_btn_activo = "#1f538d"
+        self.color_borde_activo = self.color_neon
+
+        # Botones con el comando corregido para evitar el "not found"
+        self.btn_ahorro = ctk.CTkButton(self.frame_perfiles, text="MODO AHORRO", height=50,
+                                        fg_color=self.color_btn_reposo,
+                                        command=lambda: self.aplicar_perfil("power-saver", self.btn_ahorro))
+        self.btn_ahorro.pack(pady=10, padx=20, fill="x")
+
+        self.btn_normal = ctk.CTkButton(self.frame_perfiles, text="MODO BALANCEADO", height=50,
+                                        fg_color=self.color_btn_reposo,
+                                        command=lambda: self.aplicar_perfil("balanced", self.btn_normal))
+        self.btn_normal.pack(pady=10, padx=20, fill="x")
+
+        self.btn_gamer = ctk.CTkButton(self.frame_perfiles, text="MODO GAMER 🔥", height=50,
+                                       fg_color=self.color_btn_reposo,
+                                       command=lambda: self.aplicar_perfil("performance", self.btn_gamer))
+        self.btn_gamer.pack(pady=10, padx=20, fill="x")
+
+        self.lista_botones_gamer = [self.btn_ahorro, self.btn_normal, self.btn_gamer]
+
+        # --- SECCIÓN DE TIPS RECUPERADA ---
+        tips_frame = ctk.CTkFrame(tab, fg_color="transparent")
+        tips_frame.pack(pady=20, padx=50, fill="x")
+
+        ctk.CTkLabel(tips_frame, text="Tips para Mejorar FPS:", font=("Arial", 14, "bold"), text_color=self.color_neon).pack(anchor="w")
+
+        tips = [
+            "• Desactivar el Compositor (XFCE) mejora el input lag.",
+            "• Usar 'gamemoded %command%' en los parámetros de Steam.",
+            "• Cerrar navegadores pesados antes de iniciar un juego."
+        ]
+
+        for tip in tips:
+            ctk.CTkLabel(tips_frame, text=tip, font=("Arial", 12), text_color="#aaaaaa").pack(anchor="w", pady=2)
+
+        # Estado inicial
+        self.aplicar_perfil("balanced", self.btn_normal)
+
+    def aplicar_perfil(self, modo, boton_clicado):
+        """ Cambia el color del botón activo y usa powerprofilesctl """
+        for btn in self.lista_botones_gamer:
+            btn.configure(fg_color=self.color_btn_reposo, border_width=0)
+
+        boton_clicado.configure(
+            fg_color=self.color_btn_activo,
+            border_width=2,
+            border_color=self.color_borde_activo
         )
-        ctk.CTkLabel(right_p, text=tips_text, justify="left", font=("Arial", 13), padx=20).pack(pady=10, fill="both")
+
+        # Usamos powerprofilesctl que SI está en tu sistema
+        try:
+            subprocess.run(["powerprofilesctl", "set", modo], check=True)
+            print(f"Perfil {modo} activado correctamente.")
+        except Exception as e:
+            print(f"Error al cambiar perfil: {e}")
 
     # --- 3. SOFTWARE (TERMINAL FIX) ---
     def setup_software(self):
         tab = self.tabview.tab("Software")
         for widget in tab.winfo_children(): widget.destroy()
-        
+
         top_f = ctk.CTkFrame(tab, fg_color="transparent")
         top_f.pack(fill="x", padx=50, pady=20)
-        
+
         self.entry_busqueda = ctk.CTkEntry(top_f, placeholder_text="🔍 Buscar aplicación para eliminar...", width=500)
         self.entry_busqueda.pack(side="left", padx=(0,10))
         self.entry_busqueda.bind("<KeyRelease>", self.filtrar_apps)
@@ -142,7 +177,7 @@ class OpenDashApp(ctk.CTk):
 
         self.proc_text = ctk.CTkLabel(self.proc_frame, text="Cargando procesos...", font=("Courier New", 12), justify="left", anchor="nw")
         self.proc_text.pack(fill="both", expand=True, padx=20, pady=15)
-        
+
         self.refresh_net_cards()
         self.update_processes()
 
@@ -162,15 +197,15 @@ class OpenDashApp(ctk.CTk):
     def update_processes(self):
         try:
             # Obtenemos los 10 procesos que más CPU consumen (estilo monitor de recursos)
-            procs = sorted(psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent']), 
+            procs = sorted(psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent']),
                            key=lambda x: x.info['cpu_percent'], reverse=True)[:10]
-            
+
             header = f"{'PID':<8} {'NOMBRE':<20} {'CPU %':<10} {'RAM %':<10}\n"
             header += "-" * 50 + "\n"
             lines = ""
             for p in procs:
                 lines += f"{p.info['pid']:<8} {p.info['name'][:18]:<20} {p.info['cpu_percent']:<10} {p.info['memory_percent']:>5.1f}%\n"
-            
+
             self.proc_text.configure(text=header + lines)
         except: pass
         # Actualizamos cada 3 segundos la lista de procesos
@@ -192,7 +227,7 @@ class OpenDashApp(ctk.CTk):
             # Si tu usuario no es cinnamontrixie, cambialo en la ruta de abajo
             user_home = os.path.expanduser("~")
             user_path = f"{user_home}/.local/share/Trash"
-            
+
             cmd = (
                 f"pkexec bash -c '"
                 "apt-get clean && apt-get autoremove -y; "
