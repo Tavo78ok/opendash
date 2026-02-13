@@ -1,11 +1,13 @@
-# 🚀 OpenDash v1.3.1 - ArgOs Platinum Edition
+# 🚀 OpenDash v1.4 - ArgOs Platinum Edition
 
 Centro de control integral para **OpenArgOs**, diseñado para monitoreo de hardware, optimización de energía y mantenimiento del sistema.
 
 ## ✨ Novedades de la Versión 1.3
 - **Dashboard Avanzado:** Información técnica detallada (CPU, GPU, Kernel) con estética profesional.
+- **Gamer:** Selector de perfiles para adecuarse a cada pc, tipo de trabajo o para juegos
 - **Limpiador Total:** Ahora incluye vaciado de papelera de usuario y limpieza de caché de sistema.
 - **Monitor de Red y Procesos:** Visualización en tiempo real de la actividad en segundo plano.
+- **Inicio:**Monitor de aplicaciones de inicio automatico, con la opcion de desmarcar y refrescar la info
 
 ## 📸 Capturas de Pantalla
 
