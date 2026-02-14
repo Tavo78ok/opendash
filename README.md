@@ -44,3 +44,6 @@ python3 opendash.py
 
 ##📦 Paquete .DEB
 Puedes encontrar el instalador listo en la sección de Releases o descargar el archivo opendash-pkg.deb de este repositorio e instalarlo con: sudo apt install ./opendash-pkg.deb
+
+
+
