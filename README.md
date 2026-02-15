@@ -33,16 +33,19 @@ Para ejecutar desde el código fuente en Debian Trixie / ArgOs:
 
 ```bash
 # Instalar dependencias necesarias
+
 sudo apt update
 sudo apt install python3-pip python3-psutil python3-tk -y
 pip install customtkinter --break-system-packages
 
 # Clonar y ejecutar
+
 git clone [https://github.com/Tavo78ok/opendash.git](https://github.com/Tavo78ok/opendash.git)
 cd opendash
 python3 opendash.py
 
 ### 📦 Paquete .DEB
+
 Puedes encontrar el instalador listo en la sección de Releases o descargar el archivo opendash-pkg.deb de este repositorio e instalarlo con: sudo apt install ./opendash-pkg.deb
 
 ### License
