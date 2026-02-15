@@ -1,3 +1,8 @@
+# OpenDash v1.4 - Optimizador ArgOs Platinum
+# Desarrollado por Tavo (Tavo78ok)
+# Licencia: MIT
+# GitHub: https://github.com/Tavo78ok/opendash
+
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox
