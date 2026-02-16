@@ -1,4 +1,4 @@
-# 🚀 OpenDash v1.4 - ArgOs Platinum Edition
+# 🚀 OpenDash v1.5 - ArgOs Platinum Ultra Edition
 
 Centro de control integral para **OpenArgOs**, diseñado para monitoreo de hardware, optimización de energía y mantenimiento del sistema.
 
