@@ -3,6 +3,7 @@
 # Licencia: MIT
 # GitHub: https://github.com/Tavo78ok/opendash
 #!/usr/bin/env python3
+#!/usr/bin/env python3
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox
@@ -46,8 +47,17 @@ class OpenDashApp(ctk.CTk):
         self.setup_software()
         self.setup_red()
 
-        self.update_dashboard()
-        self.actualizar_grafico_red()
+        # En lugar de una sola función, despertamos el dashboard directo
+        self.after(500, self.update_dashboard) # El dashboard primero
+        self.after(1000, self.carga_pesada_inicial) # Lo demás después
+        self.after(1000, self.actualizar_grafico_red)
+
+    def carga_pesada_inicial(self):
+        # Aquí metés todo lo que consume tiempo al arrancar
+        self.refresh_sys_info()
+        self.listar_apps()
+        self.cargar_apps_inicio()
+
 
     def setup_dashboard(self):
         tab = self.tabview.tab("Dashboard")
@@ -77,8 +87,8 @@ class OpenDashApp(ctk.CTk):
         
         ctk.CTkLabel(info_frame, text="🛡️ ESPECIFICACIONES DEL EQUIPO", font=("Arial", 14, "bold"), text_color=self.color_neon).pack(pady=(15, 5))
 
-        # CORREGIDO: Se quitó line_spacing para evitar el crash
-        self.info_text = ctk.CTkLabel(info_frame, text="Cargando...", font=("Courier New", 15, "bold"), 
+        # ARREGLO: Texto en Label con fuente 16 y Bold para que no quede pequeño
+        self.info_text = ctk.CTkLabel(info_frame, text="Cargando...", font=("Courier New", 16, "bold"), 
                                      justify="left", anchor="nw")
         self.info_text.pack(fill="both", expand=True, padx=60, pady=20)
         self.refresh_sys_info()
@@ -95,6 +105,55 @@ class OpenDashApp(ctk.CTk):
         bar.set(0)
         return card, label, bar
 
+    def refresh_sys_info(self):
+        try:
+            uname = platform.uname()
+            distro = "ArgOs Platinum Edition"
+            pkgs = subprocess.check_output("dpkg -l | wc -l", shell=True, text=True).strip()
+
+            try:
+                gpu_cmd = r"lspci | grep -E 'VGA|3D' | cut -d ':' -f3 | sed 's/\[.*\]//g' | head -n 1"
+                gpu = subprocess.check_output(gpu_cmd, shell=True, text=True).strip()
+            except:
+                gpu = "No detectada"
+
+            info = (
+                f" OS:        {distro}\n\n"
+                f" HOST:      {uname.node}\n\n"
+                f" KERNEL:    {uname.release}\n\n"
+                f" PAQUETES:  {pkgs} (dpkg)\n\n"
+                f" CPU:       {uname.processor[:35]}\n\n"
+                f" GPU:       {gpu[:35]}\n\n"
+                f" UPTIME:    {self.get_uptime()}"
+            )
+            self.info_text.configure(text=info)
+        except: pass
+
+    def limpiar_sistema(self):
+        if messagebox.askyesno("Limpieza Profunda", "¿Desea ejecutar la limpieza total?\n(RAM, Paquetes y Papelera)"):
+            usuario = os.getlogin()
+            # ARREGLO: Ahora borra la papelera de forma efectiva por comandos
+            cmd = (
+                "echo '--- 🚀 OPTIMIZANDO RAM ---'; sync; echo 3 | sudo tee /proc/sys/vm/drop_caches; "
+                "echo -e '\n--- 📦 LIMPIANDO PAQUETES ---'; sudo apt autoremove -y && sudo apt clean; "
+                "echo -e '\n--- 🗑️ VACIANDO PAPELERA ---'; "
+                f"rm -rf /home/{usuario}/.local/share/Trash/files/*; "
+                f"rm -rf /home/{usuario}/.local/share/Trash/info/*; "
+                "echo -e '\n✅ PROCESO TERMINADO. PRESIONE ENTER PARA SALIR.'; read"
+            )
+            subprocess.Popen(["x-terminal-emulator", "-e", "pkexec", "bash", "-c", cmd])
+
+    def desinstalar_app(self):
+        try:
+            sel = self.app_listbox.get(self.app_listbox.curselection())
+            if messagebox.askyesno("Confirmar", f"¿Eliminar {sel} y sus dependencias?"):
+                # ARREGLO: Purge y Autoremove en cadena para limpieza total
+                cmd = f"pkexec bash -c 'apt purge -y {sel} && apt autoremove -y; echo -e \"\\nListo. Presione Enter.\"; read'"
+                subprocess.Popen(["x-terminal-emulator", "-e", "bash", "-c", cmd])
+                self.after(5000, self.listar_apps)
+        except: pass
+
+    # --- PESTAÑA RED (INTACTA COMO PEDISTE) ---
     def setup_red(self):
         tab = self.tabview.tab("Red")
         for widget in tab.winfo_children(): widget.destroy()
@@ -120,15 +179,16 @@ class OpenDashApp(ctk.CTk):
         self.proc_text.pack(fill="both", expand=True, padx=20, pady=10)
         self.update_processes()
 
+    # (El resto de funciones: setup_gamer, setup_inicio, etc., se mantienen igual)
     def setup_gamer(self):
         tab = self.tabview.tab("Gamer")
         for widget in tab.winfo_children(): widget.destroy()
 
         # Título principal con más presencia
-        ctk.CTkLabel(tab, text="🚀 Optimización de Rendimiento",
+        ctk.CTkLabel(tab, text="🚀 Optimización de Rendimiento", 
                      font=("Arial", 26, "bold"), text_color=self.color_neon).pack(pady=(20, 10))
 
-        ctk.CTkLabel(tab, text="Seleccioná un perfil para ajustar el consumo y la potencia del equipo.",
+        ctk.CTkLabel(tab, text="Seleccioná un perfil para ajustar el consumo y la potencia del equipo.", 
                      font=("Arial", 13), text_color="gray").pack(pady=(0, 20))
 
         # Contenedor central para los botones y descripciones
@@ -139,21 +199,21 @@ class OpenDashApp(ctk.CTk):
         self.btn_ahorro = ctk.CTkButton(menu_frame, text="MODO AHORRO", height=55, width=400, font=("Arial", 14, "bold"),
                                         command=lambda: self.aplicar_perfil("ahorro", self.btn_ahorro))
         self.btn_ahorro.pack(pady=(10, 0))
-        ctk.CTkLabel(menu_frame, text="Reduce la frecuencia del CPU y el brillo para maximizar la batería.",
+        ctk.CTkLabel(menu_frame, text="🍃 Reduce la frecuencia del CPU y el brillo para maximizar la batería.", 
                      font=("Arial", 11, "italic"), text_color="#777").pack(pady=(2, 15))
 
         # MODO BALANCEADO
         self.btn_normal = ctk.CTkButton(menu_frame, text="MODO BALANCEADO", height=55, width=400, font=("Arial", 14, "bold"),
                                         command=lambda: self.aplicar_perfil("normal", self.btn_normal))
         self.btn_normal.pack(pady=(10, 0))
-        ctk.CTkLabel(menu_frame, text="Equilibrio inteligente entre temperatura, ruido y velocidad.",
+        ctk.CTkLabel(menu_frame, text="⚖️ Equilibrio inteligente entre temperatura, ruido y velocidad.", 
                      font=("Arial", 11, "italic"), text_color="#777").pack(pady=(2, 15))
 
         # MODO GAMER
         self.btn_gamer = ctk.CTkButton(menu_frame, text="MODO GAMER 🔥", height=55, width=400, font=("Arial", 14, "bold"),
                                        command=lambda: self.aplicar_perfil("gamer", self.btn_gamer))
         self.btn_gamer.pack(pady=(10, 0))
-        ctk.CTkLabel(menu_frame, text="Desbloquea los límites de energía para máxima tasa de frames y respuesta.",
+        ctk.CTkLabel(menu_frame, text="⚡ Desbloquea los límites de energía para máxima tasa de frames y respuesta.", 
                      font=("Arial", 11, "italic"), text_color="#777").pack(pady=(2, 15))
 
         # Zona de Tips al final para llenar el espacio inferior
@@ -164,46 +224,11 @@ class OpenDashApp(ctk.CTk):
                        "• El Modo Gamer es ideal si tenés la PC enchufada a la corriente.\n"
                        "• Si notás que los ventiladores hacen mucho ruido, probá el Modo Balanceado.\n"
                        "• Para ver películas o navegar, el Modo Ahorro mantiene el equipo frío.")
-
+        
         ctk.CTkLabel(tip_frame, text=tip_content, font=("Arial", 12), justify="left", padx=20, pady=15).pack()
 
         self.lista_botones_gamer = [self.btn_ahorro, self.btn_normal, self.btn_gamer]
         self.cargar_perfil_memoria()
-
-    def refresh_sys_info(self):
-        try:
-            uname = platform.uname()
-            distro = "ArgOs Platinum Edition"
-            pkgs = subprocess.check_output("dpkg -l | wc -l", shell=True, text=True).strip()
-            # Usamos doble \n para separar las líneas y que no se vea chico
-            info = (
-                f" OS:       {distro}\n\n"
-                f" HOST:     {uname.node}\n\n"
-                f" KERNEL:   {uname.release}\n\n"
-                f" PAQUETES: {pkgs} (dpkg)\n\n"
-                f" CPU:      {uname.processor}\n\n"
-                f" UPTIME:   {self.get_uptime()}"
-            )
-            self.info_text.configure(text=info)
-        except: pass
-
-    def get_uptime(self):
-        try:
-            with open('/proc/uptime', 'r') as f:
-                s = float(f.readline().split()[0])
-                return f"{int(s//3600)}h {int((s%3600)//60)}m"
-        except: return "N/A"
-
-    def limpiar_ram(self):
-        try:
-            subprocess.run(["pkexec", "sh", "-c", "sync; echo 3 > /proc/sys/vm/drop_caches"])
-            messagebox.showinfo("ArgOs Platinum", "¡Memoria optimizada!")
-        except: pass
-
-    def limpiar_sistema(self):
-        if messagebox.askyesno("Limpieza", "¿Ejecutar limpieza de paquetes innecesarios?"):
-            cmd = "pkexec apt autoremove -y && apt clean"
-            subprocess.Popen(["x-terminal-emulator", "-e", "bash", "-c", f"{cmd}; read"])
 
     def setup_software(self):
         tab = self.tabview.tab("Software")
@@ -230,14 +255,6 @@ class OpenDashApp(ctk.CTk):
         self.app_listbox.delete(0, tk.END)
         for app in self.todas_las_apps:
             if b in app.lower(): self.app_listbox.insert(tk.END, app)
-
-    def desinstalar_app(self):
-        try:
-            sel = self.app_listbox.get(self.app_listbox.curselection())
-            if messagebox.askyesno("Confirmar", f"¿Eliminar {sel}?"):
-                cmd = f"pkexec apt purge -y {sel} && apt autoremove -y"
-                subprocess.Popen(["x-terminal-emulator", "-e", "bash", "-c", f"{cmd}; read"])
-        except: pass
 
     def setup_inicio(self):
         tab = self.tabview.tab("Inicio")
@@ -284,6 +301,19 @@ class OpenDashApp(ctk.CTk):
             else: self.aplicar_perfil("normal", self.btn_normal, False)
         else: self.aplicar_perfil("normal", self.btn_normal, False)
 
+    def get_uptime(self):
+        try:
+            with open('/proc/uptime', 'r') as f:
+                s = float(f.readline().split()[0])
+                return f"{int(s//3600)}h {int((s%3600)//60)}m"
+        except: return "N/A"
+
+    def limpiar_ram(self):
+        try:
+            subprocess.run(["pkexec", "sh", "-c", "sync; echo 3 > /proc/sys/vm/drop_caches"])
+            messagebox.showinfo("ArgOs Platinum", "¡Memoria optimizada!")
+        except: pass
+
     def actualizar_grafico_red(self):
         try:
             io = psutil.net_io_counters().bytes_recv + psutil.net_io_counters().bytes_sent
@@ -305,17 +335,31 @@ class OpenDashApp(ctk.CTk):
 
     def update_dashboard(self):
         try:
-            cpu = psutil.cpu_percent()
-            ram = psutil.virtual_memory()
-            disk = psutil.disk_usage('/')
-            self.cpu_l.configure(text=f"{cpu}%")
-            self.cpu_b.set(cpu/100)
-            self.ram_l.configure(text=f"{ram.used/(1024**3):.1f} GB")
-            self.ram_b.set(ram.percent/100)
-            self.disk_l.configure(text=f"{disk.free/(1024**3):.0f} GB Libres")
-            self.disk_b.set(disk.percent/100)
-        except: pass
-        self.after(2000, self.update_dashboard)
+            # 1. Leemos los datos
+            cpu_val = psutil.cpu_percent(interval=0.1)
+            mem = psutil.virtual_memory()
+            disco = psutil.disk_usage('/')
+
+            # 2. DEBUG: Esto imprimirá los números en la terminal de Kate
+            print(f"DEBUG -> CPU: {cpu_val}% | RAM: {mem.percent}% | DISCO: {disco.percent}%")
+
+            # 3. Actualizamos etiquetas (sin tanto cálculo raro por ahora)
+            self.cpu_l.configure(text=f"{int(cpu_val)}%")
+            self.ram_l.configure(text=f"{round(mem.used / (1024**3), 2)} GB")
+            self.disk_l.configure(text=f"{round(disco.free / (1024**3), 1)} GB Libres")
+
+            # 4. Actualizamos barras (Aseguramos que el valor sea entre 0 y 1)
+            self.cpu_b.set(cpu_val / 100)
+            self.ram_b.set(mem.percent / 100)
+            self.disk_b.set(disco.percent / 100)
+
+            self.update_idletasks()
+
+        except Exception as e:
+            print(f"Error crítico en dashboard: {e}")
+
+        # 5. Reintento rápido
+        self.after(1000, self.update_dashboard)
 
     def refresh_net_cards(self):
         for n, a in psutil.net_if_addrs().items():
@@ -337,3 +381,7 @@ class OpenDashApp(ctk.CTk):
 if __name__ == "__main__":
     app = OpenDashApp()
     app.mainloop()
+
+
+
+       
