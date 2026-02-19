@@ -2,7 +2,7 @@
 
 Centro de control integral para **OpenArgOs**, diseñado para monitoreo de hardware, optimización de energía y mantenimiento del sistema.
 
-## ✨ Novedades de la Versión 1.4 Platinum
+## ✨ Novedades de la Versión 1.5 Platinum
 - **Dashboard Avanzado:** Información técnica detallada (CPU, GPU, Kernel) con estética profesional.
 - **Gamer:** Selector de perfiles para adecuarse a cada pc, tipo de trabajo o para juegos
 - **Limpiador Total:** Ahora incluye vaciado de papelera de usuario y limpieza de caché de sistema.
