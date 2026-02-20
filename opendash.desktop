@@ -1,11 +1,12 @@
 [Desktop Entry]
 Name=OpenDash
 Comment=Optimización ArgOs Platinum
-Exec=opendash
-Icon=opendash
+Exec=opendash-run
+Icon=/usr/share/pixmaps/opendash.png
 Terminal=false
 Type=Application
 Categories=System;Settings;
+StartupWMClass=opendash
 
 
 
