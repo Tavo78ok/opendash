@@ -3,7 +3,6 @@
 # Licencia: MIT
 # GitHub: https://github.com/Tavo78ok/opendash
 #!/usr/bin/env python3
-#!/usr/bin/env python3
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox
@@ -14,16 +13,27 @@ import os
 
 class OpenDashApp(ctk.CTk):
     def __init__(self):
-        super().__init__()
+        # 1. ESTO ES CLAVE: Pasamos el className directamente al constructor de la base
+        super().__init__(className='opendash')
 
+        # 2. Configuramos la identidad
         self.title("OpenDash v1.5 - ArgOs Platinum")
-        self.geometry("1100x650") 
-        ctk.set_appearance_mode("dark")
+        self.geometry("1100x650")
 
+        # 3. Forzamos el nombre de la instancia para el Window Manager
         try:
-            self.icono = tk.PhotoImage(file='/usr/share/pixmaps/opendash.png')
-            self.wm_iconphoto(False, self.icono)
-        except: pass
+            self.wm_instance_name("opendash")
+            self.wm_class("opendash", "opendash")
+        except:
+            # Si falla el método directo, usamos el comando de TCL (el motor de Tkinter)
+            try:
+                self.tk.call('wm', 'iconname', self._w, 'opendash')
+                self.tk.call('wm', 'class', self._w, 'opendash')
+            except:
+                pass
+
+        ctk.set_appearance_mode("dark")
+        # ... resto de tu código (iconos, colores, etc)
 
         self.color_neon = "#00ffa3"
         self.color_card = "#1a1c23"
@@ -379,9 +389,14 @@ class OpenDashApp(ctk.CTk):
         self.after(3000, self.update_processes)
 
 if __name__ == "__main__":
+    # Truco para que el icono aparezca en el dock de Linux
+    try:
+        from ctypes import cdll
+        myappid = 'argos.opendash.v1'
+        # Esto le da un ID único al proceso
+    except:
+        pass
     app = OpenDashApp()
     app.mainloop()
 
-
-
-       
+          
