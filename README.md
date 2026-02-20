@@ -25,8 +25,15 @@ Centro de control integral para **OpenArgOs**, diseñado para monitoreo de hardw
 ### 🎮 Modo Gamer (Optimización)
 <img src="gamer.png" width="800">
 
+### Inicio (Aplicaciones con inicio automatico)
+<img src="inicio.png" width="800">
+
+### Software (Desintalador inteligente)
+<img src="software.png" width="800">
+
 ### 🌐 Red y Procesos
 <img src="red.png" width="800">
+
 ## 📥 Instalación Rápida
 
 Para ejecutar desde el código fuente en Debian Trixie / ArgOs:
