@@ -38,7 +38,7 @@ Centro de control integral para **OpenArgOs**, diseñado para monitoreo de hardw
 
 Para ejecutar desde el código fuente en Debian Trixie / ArgOs:
 
-```bash
+
 # Instalar dependencias necesarias
 
 sudo apt update
