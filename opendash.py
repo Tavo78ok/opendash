@@ -1,4 +1,4 @@
-# OpenDash v1.4 - Optimizador ArgOs Platinum
+# OpenDash v1.5 - Optimizador ArgOs Platinum
 # Desarrollado por Tavo (Tavo78ok)
 # Licencia: MIT
 # GitHub: https://github.com/Tavo78ok/opendash
