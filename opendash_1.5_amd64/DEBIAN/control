@@ -1,0 +1,15 @@
+Package: opendash
+Version: 1.5
+Section: utils
+Priority: optional
+Architecture: all
+Depends: python3, python3-tk, python3-psutil, python3-pip, power-profiles-daemon
+Maintainer: Tavo <el-tavo78ok@hotmail.com>
+Description: Dashboard de optimizacion para Argos Platinum.
+ Incluye limpieza profunda, desinstalador y monitoreo de red.
+
+
+
+
+
+

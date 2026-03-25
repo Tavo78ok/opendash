@@ -1,0 +1,12 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: OpenDash
+Source: https://github.com/Tavo78ok/opendash
+
+Files: *
+Copyright: 2024-2026 Tavo <https://github.com/Tavo78ok>
+License: MIT
+
+Files: debian/*
+Copyright: 2026 Tavo
+License: MIT
+

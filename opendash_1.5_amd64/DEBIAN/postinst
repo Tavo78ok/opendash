@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Configurando OpenDash v1.5..."
+# Instala la librería faltante
+python3 -m pip install customtkinter --break-system-packages --ignore-installed || true
+# Asegura permisos de ejecución al lanzador
+chmod +x /usr/bin/opendash-run
